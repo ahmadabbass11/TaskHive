@@ -1,66 +1,154 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Task Hive
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Task Hive is a full-stack team collaboration platform developed as a Computer Science capstone project. It brings project management, task tracking, team communication, and file sharing into one application.
 
-## About Laravel
+The project combines a Laravel backend with React/Inertia pages and Blade views. It also integrates real-time messaging through Redis and Laravel Echo Server, video calls through Twilio, and feedback moderation through a Hugging Face model.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Team management:** create teams, manage members, and update member roles.
+- **Projects and tasks:** create projects, assign tasks, and organize associated milestones.
+- **Messaging:** create conversations, send messages, and broadcast updates to connected clients.
+- **File sharing:** upload task attachments and download shared files.
+- **Video calls:** generate Twilio access tokens for browser-based calls.
+- **User accounts:** registration, login, password reset, and profile management.
+- **Permissions:** role checks and authenticated routes for application features.
+- **Feedback:** submit feedback with an external toxicity-classification integration.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technology stack
 
-## Learning Laravel
+| Area | Technologies |
+| --- | --- |
+| Backend | PHP 8.2+, Laravel 11, Eloquent ORM |
+| Frontend | React 18, Inertia.js 2, Blade, Tailwind CSS, Vite |
+| Database | Laravel database migrations and relational models |
+| Real-time communication | Redis, Laravel Echo, Laravel Echo Server, Socket.IO |
+| Video | Twilio Video |
+| Moderation | Hugging Face inference API |
+| Testing | Pest, PHPUnit |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Application structure
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```text
+app/                 Controllers, models, events, and providers
+config/              Application and service configuration
+database/            Migrations, factories, and seeders
+resources/js/        React components, layouts, and pages
+resources/views/     Blade application views
+routes/              Web and authentication routes
+tests/               Feature and unit tests
+laravel-echo-server.json
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Local setup
 
-## Laravel Sponsors
+### Prerequisites
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- PHP 8.2 or later and the extensions required by Laravel and your database driver.
+- Composer.
+- Node.js and npm compatible with the included package lockfile.
+- A database supported by the project configuration; configure your chosen connection in `.env`.
+- Redis for real-time messaging.
+- Twilio credentials for video calls and a Hugging Face token for the moderation integration.
 
-### Premium Partners
+### 1. Install dependencies
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Open a terminal at the repository root, where `artisan` and `composer.json` are located:
 
-## Contributing
+```bash
+composer install
+npm ci
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Configure the environment
 
-## Code of Conduct
+Edit `.env` with your local database, Redis, and application settings. For a local MySQL database, for example:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```dotenv
+APP_NAME="Task Hive"
+APP_URL=http://localhost:8000
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=taskhive
+DB_USERNAME=your_local_database_user
+DB_PASSWORD=your_local_database_password
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+BROADCAST_DRIVER=redis
+QUEUE_CONNECTION=database
+REDIS_CLIENT=predis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
 
-## License
+TWILIO_ACCOUNT_SID=
+TWILIO_API_KEY=
+TWILIO_API_SECRET=
+HUGGINGFACE_API_KEY=
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Create the database before running migrations. The broadcasting configuration reads `BROADCAST_DRIVER`; the starter `.env.example` may instead contain `BROADCAST_CONNECTION`, so ensure the Redis driver is explicitly configured.
+
+Keep real credentials in your local `.env` only. External services may require a paid account or service-specific configuration.
+
+### 3. Initialize the application
+
+```bash
+php artisan migrate
+php artisan storage:link
+php artisan config:clear
+```
+
+Register a user through the application. Review the seeders before using them; they are intended for development rather than production account provisioning.
+
+### 4. Start the web application
+
+Run these commands in separate terminals:
+
+```bash
+php artisan serve
+```
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:8000`.
+
+### 5. Enable real-time messaging
+
+Start your Redis service and check `laravel-echo-server.json`. Its application URL, Redis settings, CORS configuration, and authentication endpoint must match your local environment. The frontend currently connects to the page hostname on port `6001`.
+
+Then run these commands in separate terminals:
+
+```bash
+npx laravel-echo-server start
+```
+
+```bash
+php artisan queue:work
+```
+
+### 6. Configure optional integrations
+
+- **Video calls:** provide Twilio account, API key, and API secret values. Test browser camera and microphone permissions.
+- **Feedback moderation:** configure `HUGGINGFACE_API_KEY` and check that the model endpoint in `FeedbackController` is available for your account. Provider endpoints and access requirements may need updating.
+
+## Tests and frontend build
+
+```bash
+php artisan test
+npm run build
+```
+
+The repository includes authentication and profile feature tests alongside starter tests. These commands are provided for local verification; this README does not claim complete feature coverage or a verified passing test run.
+
+## Project status
+
+This repository presents an academic project, not a production deployment. Real-time communication and third-party integrations require environment-specific setup. Before production use, review channel authorization, upload controls, access checks, HTTPS/TLS settings, error handling, and dependencies. The moderation request currently disables TLS certificate verification and allows feedback through when the external service fails; those behaviours should be revised before deployment.
+
+## Author
+
+**Ahmad Abbas** — Computer Science capstone project, Lebanese American University.
